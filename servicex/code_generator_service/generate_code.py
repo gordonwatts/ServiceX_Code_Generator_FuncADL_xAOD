@@ -27,13 +27,25 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 from flask import request, Response
 from flask_restful import Resource
+import ast
+import ast_language
+from ast_language import linq_util
+from ast_language import ast_util
 
 
 class GenerateCode(Resource):
     def post(self):
         code = request.data.decode('utf8')
+
+        raw_tree = ast.parse(code)
+        tree_with_select = linq_util.transform_selects(raw_tree)
+        text_ast = ast_language.python_ast_to_text_ast(tree_with_select)
+        print(text_ast)
+        translated_python_ast = ast_language.text_ast_to_python_ast(text_ast)
+        cols = ast_util.python_ast_to_columns(translated_python_ast)
+
         response = Response(
-            response=code,
+            response=cols,
             status=200, mimetype='application/text')
-        print("Func Code = ", code)
+        print("Func Code = ", cols)
         return response

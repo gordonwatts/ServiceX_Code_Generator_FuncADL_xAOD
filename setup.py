@@ -34,7 +34,7 @@ with io.open('README.rst', 'rt', encoding='utf8') as f:
 
 setup(
     name='servicex_code_generator',
-    version='0.2.0',
+    version='0.1',
     url='https://iris-hep.org',
     license='BSD',
     maintainer='ServiceX Team',
@@ -47,7 +47,11 @@ setup(
     install_requires=[
         'flask',
         'Flask-WTF',
-        'flask-restful'
+        'flask-restful',
+        'ast-language==0.1'
+    ],
+    dependency_links=[
+        'git+https://github.com/iris-hep/ast-language.git#egg=ast-language-0.1'
     ],
     extras_require={
         'test': [
